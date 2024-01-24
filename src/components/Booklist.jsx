@@ -1,6 +1,18 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const Booklist = () => {
+  const [books, setBooks] = useState([]);
+
+  useEffect(() => {
+    getBooks();
+  }, []);
+
+  const getBooks = async () => {
+    const response = await axios.get('http://localhost:8080/books');
+    setBooks(response.data);
+  };
   return (
     <div>
       <h1 className='title'>Books</h1>
@@ -22,13 +34,15 @@ const Booklist = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
+          {books.map((book, index) => {
+            <tr key={books.userId}>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>;
+          })}
         </tbody>
       </table>
     </div>

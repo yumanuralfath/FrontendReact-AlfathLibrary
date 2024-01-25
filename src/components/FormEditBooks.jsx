@@ -12,12 +12,12 @@ const FormEditbooks = () => {
   const [total_page, setTotal_page] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
-  const { uuid } = useParams();
+  const { id } = useParams();
 
   useEffect(() => {
     const getBookById = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/books/${uuid}`);
+        const response = await axios.get(`http://localhost:8080/books/${id}`);
         setTitle(response.data.title);
         setDescription(response.data.description);
         setCategory_id(response.data.category_id);
@@ -34,7 +34,7 @@ const FormEditbooks = () => {
       }
     };
     getBookById();
-  }, [uuid]);
+  }, [id]);
 
   const updateProduct = async (e) => {
     e.preventDefault();
@@ -45,7 +45,7 @@ const FormEditbooks = () => {
         return;
       }
 
-      await axios.patch(`http://localhost:8080/books/${uuid}`, {
+      await axios.patch(`http://localhost:8080/books/${id}`, {
         title,
         description,
         category_id,

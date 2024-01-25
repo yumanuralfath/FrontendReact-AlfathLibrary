@@ -13,6 +13,10 @@ const FormAddbooks = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
+    const handleClick = () => {
+    navigate('/books');
+  };
+
   const saveProduct = async (e) => {
     e.preventDefault();
     try {
@@ -22,7 +26,6 @@ const FormAddbooks = () => {
         return;
       }
 
-      // Additional validation if needed (e.g., numeric values)
 
       await axios.post('http://localhost:8080/books', {
         title,
@@ -36,7 +39,6 @@ const FormAddbooks = () => {
 
       // Reset form and navigate on successful save
       resetForm();
-      navigate('/books'); // Redirect to the books page or another appropriate page
     } catch (error) {
       if (error.response && error.response.status === 500) {
         setErrorMessage('Tahun wajib antara 1980 sampai 2021');
@@ -161,6 +163,7 @@ const FormAddbooks = () => {
                     </button>
                   </div>
                 </div>
+                <button onClick={handleClick} className="button is-info">Back</button>
               </form>
             </div>
           </div>

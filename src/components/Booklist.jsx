@@ -7,8 +7,11 @@ const Booklist = () => {
   const [books, setBooks] = useState([]);
   const [filteredBooks, setFilteredBooks] = useState([]);
 
+  const [categories, setCategories] = useState({});
+
   useEffect(() => {
     getBooks();
+    getCategories();
   }, []);
 
   const getBooks = async () => {
@@ -18,6 +21,20 @@ const Booklist = () => {
       setFilteredBooks(response.data); // Initialize the filteredBooks with all books
     } catch (error) {
       console.error('Error fetching books:', error.message);
+    }
+  };
+
+  const getCategories = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/categories');
+      setCategories(
+        response.data.reduce((acc, category) => {
+          acc[category.id] = category.name;
+          return acc;
+        }, {})
+      );
+    } catch (error) {
+      console.error('Error fetching categories:', error.message);
     }
   };
 
@@ -57,6 +74,8 @@ const Booklist = () => {
     setFilteredBooks(filteredBooks);
   };
 
+  const categoryBooks = categories;
+
   return (
     <div>
       <h1 className='title'>Books</h1>
@@ -88,7 +107,7 @@ const Booklist = () => {
               <td>{book.id}</td>
               <td>{book.title}</td>
               <td>{book.description}</td>
-              <td>{book.category_id}</td>
+              <td>{categoryBooks[book.category_id]}</td>
               <td>
                 <img src={book.image} width='112' height='28' alt='Logo' />
               </td>

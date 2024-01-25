@@ -8,6 +8,7 @@ import Adduser from './pages/Adduser.jsx';
 import Edituser from './pages/Edituser.jsx';
 import AddBooks from './pages/AddBooks.jsx';
 import EditBooks from './pages/EditBooks.jsx';
+import AddCategory from './pages/AddCategory.jsx';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path='/books' element={<Books />} />
           <Route path='/books/add' element={<AddBooks />} />
           <Route path='/books/edit/:id' element={<EditBooks />} />
+          <Route path='/categories' element={<AddCategory />} />
         </Routes>
       </BrowserRouter>
     </div>

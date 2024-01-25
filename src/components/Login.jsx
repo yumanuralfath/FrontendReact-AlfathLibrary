@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { LoginUser, reset } from '../features/authSlice';
+import logo from '../components/LogoYuma.png';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -32,7 +33,8 @@ const Login = () => {
             <div className='column is-4'>
               <form onSubmit={Auth} className='box'>
                 {isError && <p className=' has-text-centered'>{message}</p>}
-                <h1 className='title is-2'>Sign In</h1>
+                <h1 className='title is-2 has-text-centered'>Sign In</h1>
+                <img src={logo} alt='Logo' />
                 <div className='field'>
                   <label className='label'>Email</label>
                   <div className='control'>
@@ -64,6 +66,11 @@ const Login = () => {
                   >
                     {isLoading ? 'Loading...' : 'Login'}
                   </button>
+                </div>
+                <div className='field mt-3'>
+                  <Link to='/register' className='button is-info is-fullwidth'>
+                    Register
+                  </Link>
                 </div>
               </form>
             </div>

@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import BookFilter from './Bookfilter.jsx';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 const Booklist = () => {
   const [books, setBooks] = useState([]);
+  const [filteredBooks, setFilteredBooks] = useState([]);
 
   useEffect(() => {
     getBooks();
@@ -13,6 +15,7 @@ const Booklist = () => {
     try {
       const response = await axios.get('http://localhost:8080/books');
       setBooks(response.data);
+      setFilteredBooks(response.data); // Initialize the filteredBooks with all books
     } catch (error) {
       console.error('Error fetching books:', error.message);
     }
@@ -27,6 +30,33 @@ const Booklist = () => {
     }
   };
 
+  const handleFilter = (filter) => {
+    let filteredBooks = books.filter((book) => {
+      let titleMatch = true;
+      if (filter.title) {
+        titleMatch = book.title
+          .toLowerCase()
+          .includes(filter.title.toLowerCase());
+      }
+      let yearMatch = true;
+      if (filter.minYear || filter.maxYear) {
+        const bookYear = parseInt(book.release_year, 10);
+        yearMatch =
+          (!filter.minYear || bookYear >= filter.minYear) &&
+          (!filter.maxYear || bookYear <= filter.maxYear);
+      }
+      return titleMatch && yearMatch;
+    });
+
+    if (filter.sortBy === 'asc') {
+      filteredBooks.sort((a, b) => a.title.localeCompare(b.title));
+    } else if (filter.sortBy === 'desc') {
+      filteredBooks.sort((a, b) => b.title.localeCompare(a.title));
+    }
+
+    setFilteredBooks(filteredBooks);
+  };
+
   return (
     <div>
       <h1 className='title'>Books</h1>
@@ -34,6 +64,7 @@ const Booklist = () => {
       <Link to='/books/add' className='button is-primary mb-2'>
         Add New
       </Link>
+      <BookFilter onFilter={handleFilter} />{' '}
       <table className='table is-striped is-fullwidth'>
         <thead>
           <tr>
@@ -51,7 +82,7 @@ const Booklist = () => {
           </tr>
         </thead>
         <tbody>
-          {books.map((book, index) => (
+          {filteredBooks.map((book, index) => (
             <tr key={book.id}>
               <td>{index + 1}</td>
               <td>{book.id}</td>
